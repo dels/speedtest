@@ -6,5 +6,5 @@ set -o allexport; source .env; set +o allexport
 # wait a random amount of seconds smaller than 1 hour so that, on average, we measure every hours but not everytime the same minute
 sleep $(( ($RANDOM % 60) * 60 ))
 
-/usr/bin/speedtest --json > $SPEEDTEST_DATA_DIR/$(date +'%Y%m%d-%H%M%S').json ; 
-chown -R webster:webster  $SPEEDTEST_HOME_DIR ;
+/usr/bin/speedtest --json > $SPEEDTEST_DIR/data/$(date +'%Y%m%d-%H%M%S').json ; 
+chown -R $SPEEDTEST_USER:$SPEEDTEST_USER  $SPEEDTEST_DIR ;
