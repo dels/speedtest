@@ -1,10 +1,22 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
-# reading config data from .env file
-set -o allexport; source .env; set +o allexport
+require('dotenv').config("../")
+
+exec("/usr/bin/speedtest --json > process.env.SPEEDTEST_DIR/data/$(date +'%Y%m%d-%H%M%S').json", (error, stdout, stderr) => {
+    if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+    }
+    if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+    }
+    console.log(`stdout: ${stdout}`);
+});
+
 
 # wait a random amount of seconds smaller than 1 hour so that, on average, we measure every hours but not everytime the same minute
-sleep $(( ($RANDOM % 60) * 60 ))
+#sleep $(( ($RANDOM % 60) * 60 ))
 
 /usr/bin/speedtest --json > $SPEEDTEST_DIR/data/$(date +'%Y%m%d-%H%M%S').json ; 
-chown -R $SPEEDTEST_USER:$SPEEDTEST_USER  $SPEEDTEST_DIR ;
+#chown -R $SPEEDTEST_USER:$SPEEDTEST_USER  $SPEEDTEST_DIR ;

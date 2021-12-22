@@ -2,3 +2,8 @@
 *~
 .#*
 #*#
+data/*
+.DS_Store
+node_modules/*
+yarn.lock
+cron.hourly/speedtest_*
