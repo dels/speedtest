@@ -80,6 +80,11 @@ if(cli.flags.debug){
     console.log("debug? " + cli.flags.debug)
 }
 
+await setTimeout(async function() {
+      await fn(par);
+    }, 2000, fn, par);
+  }
+
 execute(cli.flags)
 
 
