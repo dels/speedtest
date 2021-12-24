@@ -152,13 +152,6 @@ console.log("--- STATS END ---")
 /*
   https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html
 
-  todo for compliant checking:
-  - fixme: we cant just work for the three days, we need to find timeframes which are suitable for checking the following parameters
-  - sanity check: if there has been a break of at least 3 hours after 5th and 6th measure
-  - sanity check: has there been a break of at least 5 minutes between checks
-  - sanity check: where there at least 10 measures per day in three non-consquitive days
-  - sanity check: have there been breaks between days? 
-  - sanity check: has threse been all sanity checks?
   - check: we need to add "minimale Geschwindigkeit" which must not be fallenn below which is another check
 */
 

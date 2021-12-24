@@ -3,8 +3,7 @@
 import { execute } from '../lib/speedtest_exec.js'
 import meow from 'meow';
 
-const cli = meow(`
-        
+const cli = meow(`        
 	Description
 	  runs the speedtest, usally using cronjob that runs every hours. 
 	  parameters should be set using speedtest script in same directory. 
@@ -18,6 +17,7 @@ const cli = meow(`
           --verbose, -v, verbose
           --execute, -e, execute
           --quiet, -q, quiet
+          --sleep, -s, sleep
           --min-sleep, min-sleep
           --max-sleep, max-sleep
 
@@ -48,6 +48,11 @@ const cli = meow(`
 	    default: false,
 	    alias: 'q'
 	},
+	sleep: {
+	    type: 'boolean',
+	    default: true,
+	    alias: 's'
+	},
 	maxSleep: {
 	    type: 'number',
 	    default: 45,
@@ -64,7 +69,6 @@ const cli = meow(`
   https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html
 
   todo for compliant checking:
-  - fixme: we cant just work for the three days, we need to find timeframes which are suitable for checking the following parameters
   - sanity check: if there has been a break of at least 3 hours after 5th and 6th measure
   - sanity check: has there been a break of at least 5 minutes between checks
   - sanity check: where there at least 10 measures per day in three non-consquitive days
@@ -80,16 +84,15 @@ if(cli.flags.debug){
     console.log("debug? " + cli.flags.debug)
 }
 
-await setTimeout(async function() {
-      await fn(par);
-    }, 2000, fn, par);
-  }
+if(cli.flags.sleep){
+    const sleepTime = 1000 * 60 * Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep
+    if(cli.flags.debug || cli.flags.verbose){
+        console.log("will sleep for " + sleepTime + " seconds")
+    }
+    await new Promise(resolve => {
+        setTimeout(resolve, sleepTime);
+    });
+}
 
 execute(cli.flags)
 
-
-// wait a random amount of seconds smaller than 1 hour so that, on average, we measure every hours but not everytime the same minute
-// sleep $(( ($RANDOM % 60) * 60 ))
-
-///usr/bin/speedtest --json > $SPEEDTEST_DIR/data/$(date +'%Y%m%d-%H%M%S').json ; 
-//chown -R $SPEEDTEST_USER:$SPEEDTEST_USER  $SPEEDTEST_DIR ;
