@@ -20,6 +20,7 @@ const cli = meow(`
           --sleep, -s, sleep
           --min-sleep, min-sleep
           --max-sleep, max-sleep
+          --executable, exec
 
 	Examples
 	  $ speedtest.js --execute
@@ -60,7 +61,10 @@ const cli = meow(`
 	minSleep: {
 	    type: 'number',
 	    default: 5,
-	}
+	},
+        executable: {
+            type: "string",
+        }
 
     }
 });
