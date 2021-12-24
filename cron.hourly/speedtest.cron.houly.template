@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
+SPEEDTEST_JS="adjust me git/github/speedtest/speedtest.js"
+
 if [ "x$(which node)" == "x" ]; then
   echo "node not found - please install nodejs for using speettest"
   exit -1
 fi
 
-/Users/dels/git/github/speedtest/cron.hourly/speedtest.js --execute -q
+
+
+$SPEEDTEST_JS -q --no-execute --no-sleep
 
