@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execute } from '../lib/speedtest_exec.js'
+import { execute } from './lib/speedtest_exec.js'
 import meow from 'meow';
 
 const cli = meow(`        
@@ -85,14 +85,15 @@ if(cli.flags.debug){
 }
 
 if(cli.flags.sleep){
-    const sleepTime = 1000 * 60 * Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep
+    const sleepTimeMin = Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep
+    const sleepTimeMs = sleepTimeMin * 60 * 1000
     if(cli.flags.debug || cli.flags.verbose){
-        console.log("will sleep for " + sleepTime + " seconds")
+        console.log("will sleep for " + sleepTimeMin + " minutes")
     }
     await new Promise(resolve => {
-        setTimeout(resolve, sleepTime);
+        setTimeout(resolve, sleepTimeMs);
     });
 }
 
-execute(cli.flags)
+execute(cli)
 
