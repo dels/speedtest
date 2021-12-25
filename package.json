@@ -1,7 +1,15 @@
 {
+  "license": "MIT",
   "type": "module",
   "dependencies": {
     "dotenv": "^10.0.0",
     "meow": "^10.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix --ext .js, ."
   }
 }

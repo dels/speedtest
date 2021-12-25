@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { printDebug } from './lib/helper.js'
 import { execute } from './lib/speedtest_exec.js'
 import meow from 'meow';
 
@@ -22,46 +23,46 @@ const cli = meow(`
           --max-sleep, max-sleep
           --executable, exec
 
-	Examples
-	  $ speedtest.js --execute
+        Examples
+          $ speedtest.js --execute
 `, {
     importMeta: import.meta,
     booleanDefault: undefined,
     version: "0.0.1",
     flags: {
-	debug: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'd'
-	},
-	verbose: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'v'
-	},
-	execute: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'e'
-	},
-	quiet: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'q'
-	},
-	sleep: {
-	    type: 'boolean',
-	    default: true,
-	    alias: 's'
-	},
-	maxSleep: {
-	    type: 'number',
-	    default: 45,
-	},
-	minSleep: {
-	    type: 'number',
-	    default: 5,
-	},
+        debug: {
+            type: 'boolean',
+            default: false,
+            alias: 'd'
+        },
+        verbose: {
+            type: 'boolean',
+            default: false,
+            alias: 'v'
+        },
+        execute: {
+            type: 'boolean',
+            default: false,
+            alias: 'e'
+        },
+        quiet: {
+            type: 'boolean',
+            default: false,
+            alias: 'q'
+        },
+        sleep: {
+            type: 'boolean',
+            default: true,
+            alias: 's'
+        },
+        maxSleep: {
+            type: 'number',
+            default: 45,
+        },
+        minSleep: {
+            type: 'number',
+            default: 5,
+        },
         executable: {
             type: "string",
         }
@@ -81,12 +82,7 @@ const cli = meow(`
   - check: we need to add "minimale Geschwindigkeit" which must not be fallenn below which is another check
 */
 
-if(cli.flags.debug){
-    cli.flags.printEmptyFiles = true
-    console.log("flags: " + JSON.stringify(cli.flags))
-    console.log("input: " + JSON.stringify(cli.input))
-    console.log("debug? " + cli.flags.debug)
-}
+printDebug(cli)
 
 if(cli.flags.sleep){
     const sleepTimeMin = Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep

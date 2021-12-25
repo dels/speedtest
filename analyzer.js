@@ -2,6 +2,7 @@
 
 import meow from 'meow';
 
+import { printDebug } from './lib/helper.js'
 import { readJsonFiles } from './lib/measures.js'
 
 import dotenv from "dotenv"
@@ -9,12 +10,12 @@ dotenv.config()
 
 function printResultsSorted(measures, emptyJsonFiles, precision=2){
     for(const date of Object.keys(measures).sort()){
-	console.log(date + ": ")
-	for(const time of Object.keys(measures[date]).sort()){
-	    console.log("\t" + time + " download at " +
-			((measures[date][time].download_mbit).toFixed(precision)) + " MBit/s. upload at " +
-			((measures[date][time].upload_mbit).toFixed(precision)) + " MBit/s. Ping: " + measures[date][time]["ping"])
-	}
+        console.log(date + ": ")
+        for(const time of Object.keys(measures[date]).sort()){
+            console.log("\t" + time + " download at " +
+                        ((measures[date][time].download_mbit).toFixed(precision)) + " MBit/s. upload at " +
+                        ((measures[date][time].upload_mbit).toFixed(precision)) + " MBit/s. Ping: " + measures[date][time]["ping"])
+        }
     }
 }
 
@@ -71,71 +72,73 @@ function analyseBelowNintyPercentDownload(measures, down, up, daysBack){
 }
 
 const cli = meow(`
-	Usage
-	  $ foo
+        Usage
+          $ ./analyser.js
 
-	Options
-	  --debug, -d,  debug
+        Options
+          --debug, -d,  debug
           --verbose, -v, verbose
+          --data-dir, data-dir
           --days-back, -dB, days-back
           --print-empty-files, -ef, print-empty-files  
 
-	Examples
-	  $ foo --debug
+        Examples
+          $ ./analyser.js --data-dir /home/user/speedtest/data
 `, {
     importMeta: import.meta,
     booleanDefault: undefined,
     flags: {
-	debug: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'd'
-	},
-	verbose: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'v'
-	},
-	printEmptyFiles: {
-	    type: 'boolean',
-	    default: false,
-	    alias: 'ef'
-	},
+        debug: {
+            type: 'boolean',
+            default: false,
+            alias: 'd'
+        },
+        verbose: {
+            type: 'boolean',
+            default: false,
+            alias: 'v'
+        },
+        dataDir: {
+            type: 'string',
+            default: "./data",
+        },
+        printEmptyFiles: {
+            type: 'boolean',
+            default: false,
+            alias: 'ef'
+        },
         daysBack: {
             type: 'string',
-	    default: "7",
-	    alias: 'dB'
+            default: "7",
+            alias: 'dB'
         }
     }
 });
 
-if(cli.flags.debug){
-    cli.flags.printEmptyFiles = true
-    console.log("flags: " + JSON.stringify(cli.flags))
-    console.log("input: " + JSON.stringify(cli.input))
-    console.log("debug? " + cli.flags.debug)
-}
+printDebug(cli)
 
-const {measures, emptyJsonFiles }  = readJsonFiles(cli.flags.printEmptyFiles)
+const {measures, emptyJsonFiles }  = readJsonFiles(cli)
 
 if(null == measures){
     process.exit(-1)
 }
 
-if(cli.flags.debug || cli.flags.verbose){
+if(cli.flags.verbose){
     printResultsSorted(measures, emptyJsonFiles)
 }
 
-if(0 !== emptyJsonFiles.length){
-    if(cli.flags.debug){
-        console.log("---")
+if(cli.flags.printEmptyFiles){
+    if(0 !== emptyJsonFiles.length){
+        if(cli.flags.debug){
+            console.log("---")
+        }
+        let deleteStr = "rm "
+        for(const f of emptyJsonFiles){
+            console.log(f + " is empty")
+            deleteStr += f + " "
+        }
+        console.log("delete all: rm " + deleteStr)
     }
-    let deleteStr = "rm "
-    for(const f of emptyJsonFiles){
-        console.log(f + " is empty")
-        deleteStr += f + " "
-    }
-    console.log("delete all: rm " + deleteStr)
 }
 
 const daysBack = cli.flags.daysBack
@@ -144,11 +147,11 @@ const daysBack = cli.flags.daysBack
 const belowNintyPercentDownoload = analyseBelowNintyPercentDownload(measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
 const nintyPercentAtLeast = analyzeNintyPercentDownloadAtLeast(measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
 
-console.log("--- STATS BEGIN ---")
+console.log("\n --- STATS BEGIN --- ")
 console.log("within last " + daysBack + " days: " + belowNintyPercentDownoload.times_below + "/ " + belowNintyPercentDownoload.times + " times the measures was below (" + Math.floor(belowNintyPercentDownoload.percent_below) + "% are below)")
 
 console.log("on " + nintyPercentAtLeast.days_reached + " out of " + nintyPercentAtLeast.days_reached + " days we reached ninty percent at least once!" )
-console.log("--- STATS END ---")
+console.log(" --- STATS END --- ")
 /*
   https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html
 
