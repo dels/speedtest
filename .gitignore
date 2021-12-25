@@ -3,7 +3,7 @@
 .#*
 #*#
 data/*
-data1
+data*
 .DS_Store
 node_modules/*
 yarn.lock

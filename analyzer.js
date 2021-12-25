@@ -2,31 +2,19 @@
 
 import meow from 'meow';
 
-import { printDebug } from './lib/helper.js'
+import { printResultsSorted, checkAndAdjustFlags } from './lib/helper.js'
 import { readJsonFiles } from './lib/measures.js'
+import { getTodayDate } from './lib/helper.js'
 
 import dotenv from "dotenv"
 dotenv.config()
 
-function printResultsSorted(measures, emptyJsonFiles, precision=2){
-    for(const date of Object.keys(measures).sort()){
-        console.log(date + ": ")
-        for(const time of Object.keys(measures[date]).sort()){
-            console.log("\t" + time + " download at " +
-                        ((measures[date][time].download_mbit).toFixed(precision)) + " MBit/s. upload at " +
-                        ((measures[date][time].upload_mbit).toFixed(precision)) + " MBit/s. Ping: " + measures[date][time]["ping"])
-        }
-    }
-}
-
-function analyzeNintyPercentDownloadAtLeast(measures, down, up, daysBack){
+function analyzeNintyPercentDownloadAtLeast(cli, measures, down, up, daysBack){
     let days = {}
     days.days_reached = 0
     days.days = 0
-    const now = new Date()
     for(let i = 0; i < daysBack; i++){
-        now.setDate(now.getDate() - 1)
-        const date = "" + now.getFullYear() + now.getMonth() + (now.getDate() < 10 ? "0" + now.getDate() : "" + now.getDate())
+        const date = getTodayDate(cli, -1)
         if(null == measures[date]){
             //console.warn("for " + date + " no measures have been found")
             continue
@@ -45,15 +33,13 @@ function analyzeNintyPercentDownloadAtLeast(measures, down, up, daysBack){
     return days
 }
 
-function analyseBelowNintyPercentDownload(measures, down, up, daysBack){
+function analyseBelowNintyPercentDownload(cli, measures, down, up, daysBack){
     let times = {}
     times.times_below = 0
     times.times_above = 0
     times.times = 0
-    const now = new Date()
     for(let i = 0; i < daysBack; i++){
-        now.setDate(now.getDate() - 1)
-        const date = "" + now.getFullYear() + now.getMonth() + (now.getDate() < 10 ? "0" + now.getDate() : "" + now.getDate())
+        const date = getTodayDate(cli, -1)
         if(null == measures[date]){
             //console.warn("for " + date + " no measures have been found")
             continue
@@ -114,8 +100,7 @@ const cli = meow(`
         }
     }
 });
-
-printDebug(cli)
+checkAndAdjustFlags(cli)
 
 const {measures, emptyJsonFiles }  = readJsonFiles(cli)
 
@@ -123,14 +108,14 @@ if(null == measures){
     process.exit(-1)
 }
 
-if(cli.flags.verbose){
+if(cli.flags.debug){
     printResultsSorted(measures, emptyJsonFiles)
 }
 
 if(cli.flags.printEmptyFiles){
     if(0 !== emptyJsonFiles.length){
-        if(cli.flags.debug){
-            console.log("---")
+        if(cli.flags.debug || cli.flags.verbose){
+            console.log("\n --- BEGIN EMPTY FILES --- ")
         }
         let deleteStr = "rm "
         for(const f of emptyJsonFiles){
@@ -138,14 +123,17 @@ if(cli.flags.printEmptyFiles){
             deleteStr += f + " "
         }
         console.log("delete all: rm " + deleteStr)
+        if(cli.flags.debug || cli.flags.verbose){
+            console.log("\n --- END EMPTY FILES --- ")
+        }
     }
 }
 
 const daysBack = cli.flags.daysBack
 
 
-const belowNintyPercentDownoload = analyseBelowNintyPercentDownload(measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
-const nintyPercentAtLeast = analyzeNintyPercentDownloadAtLeast(measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
+const belowNintyPercentDownoload = analyseBelowNintyPercentDownload(cli, measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
+const nintyPercentAtLeast = analyzeNintyPercentDownloadAtLeast(cli, measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
 
 console.log("\n --- STATS BEGIN --- ")
 console.log("within last " + daysBack + " days: " + belowNintyPercentDownoload.times_below + "/ " + belowNintyPercentDownoload.times + " times the measures was below (" + Math.floor(belowNintyPercentDownoload.percent_below) + "% are below)")
@@ -155,6 +143,11 @@ console.log(" --- STATS END --- ")
 /*
   https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html
 
+  - sanity check: if there has been a break of at least 3 hours after 5th and 6th measure
+  - sanity check: has there been a break of at least 5 minutes between checks
+  - sanity : where there at least 10 measures per day in three non-consquitive days
+  - sanity check: have there been breaks between days? 
+  - sanity check: has threse been all sanity checks?
   - check: we need to add "minimale Geschwindigkeit" which must not be fallenn below which is another check
 */
 
