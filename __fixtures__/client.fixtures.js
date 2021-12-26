@@ -50,3 +50,20 @@ export function cliDebugVerboseAndSilent(date=null, time=null) {
     }
     return cli
 }
+
+
+export function cliGermanAndSleep() {
+    const cli = {
+        input: [],
+        flags: {
+            dataDir: "./data2",
+            debug: false,
+            verbose:false,
+            printEmptyFiles:false,
+            daysBack:14,
+            german: true,
+            sleep: true,
+        }
+    }
+    return cli
+}
