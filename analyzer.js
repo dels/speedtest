@@ -4,7 +4,8 @@ import meow from 'meow';
 
 import { printResultsSorted, checkAndAdjustFlags } from './lib/helper.js'
 import { readJsonFiles } from './lib/measures.js'
-import { getTodayDate } from './lib/helper.js'
+//import { getTodayDate } from './lib/helper.js'
+import { getTodayDate, getTodayTime, } from './lib/date_time_utils.js'
 
 import dotenv from "dotenv"
 dotenv.config()
@@ -150,5 +151,7 @@ console.log(" --- STATS END --- ")
   - sanity check: has threse been all sanity checks?
   - check: we need to add "minimale Geschwindigkeit" which must not be fallenn below which is another check
 */
+
+
 
 //console.log(JSON.stringify(process.env))
