@@ -51,7 +51,7 @@ export function measuresAtThreeNonConsequtiveDaysWithinFourteenDaysWithBelowMini
                     upload_mbit: 26.33868136539387
                 },
                 2006: {
-                    download: 247154746.89514783,
+                    download: 240154746.89514783,
                     upload: 27618109.151399244,
                     ping: 39.976,
                     timestamp: "2021-12-22T14:06:02.117510Z",
@@ -63,15 +63,15 @@ export function measuresAtThreeNonConsequtiveDaysWithinFourteenDaysWithBelowMini
                     upload: 27618109.151399244,
                     ping: 39.976,
                     timestamp: "2021-12-22T14:06:02.117510Z",
-                    download_mbit: 240.23701371683867,
+                    download_mbit: 250.23701371683867,
                     upload_mbit: 26.33868136539387
                 },
                 2206: {
-                    download: 247154746.89514783,
+                    download: 200154746.89514783,
                     upload: 27618109.151399244,
                     ping: 39.976,
                     timestamp: "2021-12-22T14:06:02.117510Z",
-                    download_mbit: 240.23701371683867,
+                    download_mbit: 230.23701371683867,
                     upload_mbit: 26.33868136539387
                 },
                 2306: {
@@ -86,10 +86,10 @@ export function measuresAtThreeNonConsequtiveDaysWithinFourteenDaysWithBelowMini
             },
             20211222: {
                 1032: {
-                    download: 203154746.90951532,
+                    download: 200154746.90951532,
                     upload: 28194124.543322228,
                     timestamp: "2021-12-22T09:32:02.190208Z",
-                    download_mbit: 204.70513430549175,
+                    download_mbit: 200.70513430549175,
                     upload_mbit: 26.8880124505255
                 },
                 1106: {

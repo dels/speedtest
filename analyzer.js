@@ -2,9 +2,14 @@
 
 import meow from 'meow';
 
-import { printResultsSorted, checkAndAdjustFlags } from './lib/helper.js'
+import { printResultsSorted } from './lib/helper.js'
+import { checkConfig, checkAndAdjustFlags } from './lib/config_helper.js'
 import { readJsonFiles } from './lib/measures.js'
-import { analyzeNintyPercentDownloadAtLeast, analyseBelowNintyPercentDownload } from './lib/analytics.js'
+import {
+    analyzeDailyNintyPercentDownloadAtLeast,
+    analyzeBelowNintyPercentDownload,
+    daysUnderMinimalDownload, 
+} from './lib/analytics.js'
 
 import dotenv from "dotenv"
 dotenv.config()
@@ -47,12 +52,14 @@ const cli = meow(`
         },
         daysBack: {
             type: 'string',
-            default: "7",
+            default: "14",
             alias: 'dB'
         }
     }
 });
+
 checkAndAdjustFlags(cli)
+checkConfig()
 
 const { measures, emptyJsonFiles }  = readJsonFiles(cli)
 
@@ -83,13 +90,82 @@ if(cli.flags.printEmptyFiles){
 
 const daysBack = cli.flags.daysBack
 
-const belowNintyPercentDownoload = analyseBelowNintyPercentDownload(cli, measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
-const nintyPercentAtLeast = analyzeNintyPercentDownloadAtLeast(cli, measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
+
+
+
 
 console.log("\n --- STATS BEGIN --- ")
-console.log("within last " + daysBack + " days: " + belowNintyPercentDownoload.times_below + "/ " + belowNintyPercentDownoload.times + " times the measures was below (" + Math.floor(belowNintyPercentDownoload.percent_below) + "% are below)")
+/*
+ * 1. Nicht an mindestens zwei von drei Messtagen jeweils mindestens einmal 90 % der vertraglich 
+ * vereinbarten maximalen Geschwindigkeit erreicht werden
+ */
+const nintyPercentAtLeast = analyzeDailyNintyPercentDownloadAtLeast(
+    cli,
+    measures,
+    process.env.SPEEDTEST_DOWNLOAD,
+    process.env.SPEEDTEST_UPLOAD,
+    daysBack)
 
-console.log("on " + nintyPercentAtLeast.days_reached + " out of " + nintyPercentAtLeast.days_reached + " days we reached ninty percent at least once!" )
+// TODO: this must not go through all days but through 3 day blocks
+console.log("\non " + nintyPercentAtLeast.days_reached + " out of " + nintyPercentAtLeast.days
+            + " days we reached ninty percent at least once!" )
+
+if(3 > nintyPercentAtLeast.days){
+    console.log("too few measures for analyze 2 out of 3 days we reached at least 90% once a day")
+} else {
+    if(2 > nintyPercentAtLeast.days_reached){
+        console.log("\n\tATTENTION: we reached at least once a day 90% of maximum download speed on less than 2 days within last 14 days \n")
+    } else {
+        console.log("\n\tCHECK PASSED: we reached on at least two days at least 90% of maximum download speed within last 14 days\n")
+    }
+}
+
+/*
+ * 2. die normalerweise zur Verfügung stehende Geschwindigkeit nicht in 90 % der Messungen erreicht wird 
+ */
+const belowNintyPercentDownoload = analyzeBelowNintyPercentDownload(
+    cli,
+    measures,
+    process.env.SPEEDTEST_USUAL_DOWNLOAD,
+    process.env.SPEEDTEST_USUAL_UPLOAD,
+    daysBack)
+
+console.log("\nwithin last " + daysBack + " days: "
+            + belowNintyPercentDownoload.times_below + "/" + belowNintyPercentDownoload.times
+            + " times the measured download was below. this means " + ((belowNintyPercentDownoload.percent_above *100) /100) + "% were above)")
+if(90.0 > Math.floor(belowNintyPercentDownoload.percent_above)){
+    console.log("\n\tATTENTION: we reached only " + ((belowNintyPercentDownoload.percent_above *100) /100)
+                + "%. required are 90% at least\n")
+} else {
+    console.log("\n\tCHECK PASSED: we reached on average per measure 90% of maximum download speed within last 14 days\n")
+}
+
+/*
+ * 3. an mindestens zwei von drei Messtagen jeweils mindestens einmal die minimale Geschwindigkeit unterschritten
+ */
+const countBelowMinimalDownload = daysUnderMinimalDownload(
+    cli,
+    measures,
+    process.env.SPEEDTEST_MIN_DOWNLOAD,
+    process.env.SPEEDTEST_UPLOAD,
+    daysBack)
+
+// TODO: this must not go through all days but through 3 day blocks
+console.log("\non " + countBelowMinimalDownload.days_below + " out of " + countBelowMinimalDownload.days + " days "
+            + "we dropped below minimal speed at least once.")
+
+if(3 > countBelowMinimalDownload.days){
+    console.log("too few measures for analyze 2 out of 3 days we measured below minimum speed.")
+} else {
+    if(2 < countBelowMinimalDownload.days_below){
+        console.log("\n\tATTENTION: we fall in more than 2 measures below minimal download speed "
+                    + "at least once per day "
+                    + "within the last " + daysBack + " days\n")        
+    } else {
+        console.log("\n\tCHECK PASSED: within last 14 days there were less than 3 days on which "
+                    + "we fall below minimal download speed at least once\n")
+}
+}
 
 
 console.log(" --- STATS END --- ")
