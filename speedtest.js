@@ -2,9 +2,12 @@
 
 import meow from 'meow';
 
-import { printResultsSorted, checkAndAdjustFlags } from './lib/helper.js'
-import { readJsonFiles, lastMeasureWithinLastDays, longerBreakRequired } from './lib/measures.js'
+import { printResultsSorted } from './lib/helper.js'
+import { checkAndAdjustFlags } from './lib/client_helper.js'
+import { readJsonFiles } from './lib/measures.js'
 import { execute } from './lib/speedtest_exec.js'
+
+import { measurementNowWouldComplyGermanComplianceReport } from './lib/analytics.js'
 
 const cli = meow(`        
 	Description
@@ -109,37 +112,8 @@ if(cli.flags.debug){
 }
 
 if(cli.flags.german){
-    if(false === cli.flags.silent){
-        console.log("\nchecking for german bundesnetzagentur compliancy (https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html)")
-        console.log("\n --- BEGIN ANALYSIS --- \n")
-    }
-    /*
-     * measuring must happen on non-consequitive days
-     */
-    if(lastMeasureWithinLastDays(cli, measures, 1)){
-        if(cli.flags.verbose){
-            console.log("found measures taken yesterday. not measuring today.")
-        }
-        if(false === cli.flags.silent){
-            console.log("\n --- END ANALYSIS --- ")
-        }
+    if(false === measurementNowWouldComplyGermanComplianceReport(cli, measures)){
         process.exit(0)
-    }
-    /*
-     * between measure 5 and 6 there must be a break of at least 3 hours
-     */
-    if(longerBreakRequired(cli, measures)){
-        if(false === cli.flags.silent){
-            console.log("\n --- END ANALYSIS --- ")
-        }
-        process.exit(0)
-    }
-    /*
-     * there must be at least 5 minutes between two checks
-     */
-    
-    if(false === cli.flags.silent){
-        console.log("\n --- END ANALYSIS --- \n")
     }
 }
 else {

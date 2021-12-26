@@ -3,7 +3,7 @@
 import meow from 'meow';
 
 import { printResultsSorted } from './lib/helper.js'
-import { checkConfig, checkAndAdjustFlags } from './lib/config_helper.js'
+import { checkConfig, checkAndAdjustFlags } from './lib/client_helper.js'
 import { readJsonFiles } from './lib/measures.js'
 import {
     printGermanComplianceReport
