@@ -6,9 +6,12 @@
     "meow": "^10.1.2"
   },
   "devDependencies": {
-    "eslint": "^8.5.0"
+    "cross-env": "^7.0.3",
+    "eslint": "^8.5.0",
+    "jest": "^27.4.5"
   },
   "scripts": {
+    "dev": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .js, ."
   }

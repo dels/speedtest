@@ -4,59 +4,10 @@ import meow from 'meow';
 
 import { printResultsSorted, checkAndAdjustFlags } from './lib/helper.js'
 import { readJsonFiles } from './lib/measures.js'
-//import { getTodayDate } from './lib/helper.js'
-import { getTodayDate, getTodayTime, } from './lib/date_time_utils.js'
+import { analyzeNintyPercentDownloadAtLeast, analyseBelowNintyPercentDownload } from './lib/analytics.js'
 
 import dotenv from "dotenv"
 dotenv.config()
-
-function analyzeNintyPercentDownloadAtLeast(cli, measures, down, up, daysBack){
-    let days = {}
-    days.days_reached = 0
-    days.days = 0
-    for(let i = 0; i < daysBack; i++){
-        const date = getTodayDate(cli, -1)
-        if(null == measures[date]){
-            //console.warn("for " + date + " no measures have been found")
-            continue
-        }
-        days[date] = false
-        for(const time of Object.keys(measures[date])){
-            days.days += 1
-            if((measures[date][time].download_mbit) >= (process.env.SPEEDTEST_DOWNLOAD * 0.9)){
-                if(false === days[date]){
-                    days.days_reached += 1
-                    days[date] = true
-                }
-            }
-        }
-    }
-    return days
-}
-
-function analyseBelowNintyPercentDownload(cli, measures, down, up, daysBack){
-    let times = {}
-    times.times_below = 0
-    times.times_above = 0
-    times.times = 0
-    for(let i = 0; i < daysBack; i++){
-        const date = getTodayDate(cli, -1)
-        if(null == measures[date]){
-            //console.warn("for " + date + " no measures have been found")
-            continue
-        }
-        for(const time of Object.keys(measures[date])){
-            times.times += 1
-            if((measures[date][time].download_mbit) < (process.env.SPEEDTEST_DOWNLOAD * 0.9)){
-                times.times_below += 1
-            } else {
-                times.times_above += 1
-            }
-        }
-    }
-    times.percent_below = (times.times_below / times.times) * 100 
-    return times
-}
 
 const cli = meow(`
         Usage
@@ -103,7 +54,7 @@ const cli = meow(`
 });
 checkAndAdjustFlags(cli)
 
-const {measures, emptyJsonFiles }  = readJsonFiles(cli)
+const { measures, emptyJsonFiles }  = readJsonFiles(cli)
 
 if(null == measures){
     process.exit(-1)
@@ -132,7 +83,6 @@ if(cli.flags.printEmptyFiles){
 
 const daysBack = cli.flags.daysBack
 
-
 const belowNintyPercentDownoload = analyseBelowNintyPercentDownload(cli, measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
 const nintyPercentAtLeast = analyzeNintyPercentDownloadAtLeast(cli, measures, process.env.SPEEDTEST_DOWNLOAD, process.env.SPEEDTEST_UPLOAD, daysBack)
 
@@ -140,6 +90,8 @@ console.log("\n --- STATS BEGIN --- ")
 console.log("within last " + daysBack + " days: " + belowNintyPercentDownoload.times_below + "/ " + belowNintyPercentDownoload.times + " times the measures was below (" + Math.floor(belowNintyPercentDownoload.percent_below) + "% are below)")
 
 console.log("on " + nintyPercentAtLeast.days_reached + " out of " + nintyPercentAtLeast.days_reached + " days we reached ninty percent at least once!" )
+
+
 console.log(" --- STATS END --- ")
 /*
   https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html

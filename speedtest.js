@@ -19,7 +19,7 @@ const cli = meow(`
           --debug, -d,  debug
           --verbose, -v, verbose
           --execute, -e, execute     (default: false)
-          --quiet, -q, quiet
+          --silent, -q, silent
           --sleep, -s, --no-sleep    (default: true)
           --min-sleep,               (default: 5)
           --max-sleep,               (default: 45)
@@ -58,10 +58,9 @@ const cli = meow(`
             default: false,
             alias: 'e'
         },
-        quiet: {
+        silent: {
             type: 'boolean',
             default: false,
-            alias: 'q'
         },
         sleep: {
             type: 'boolean',
@@ -110,7 +109,7 @@ if(cli.flags.debug){
 }
 
 if(cli.flags.german){
-    if(false === cli.flags.quiet){
+    if(false === cli.flags.silent){
         console.log("\nchecking for german bundesnetzagentur compliancy (https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html)")
         console.log("\n --- BEGIN ANALYSIS --- \n")
     }
@@ -121,7 +120,7 @@ if(cli.flags.german){
         if(cli.flags.verbose){
             console.log("found measures taken yesterday. not measuring today.")
         }
-        if(false === cli.flags.quiet){
+        if(false === cli.flags.silent){
             console.log("\n --- END ANALYSIS --- ")
         }
         process.exit(0)
@@ -130,7 +129,7 @@ if(cli.flags.german){
      * between measure 5 and 6 there must be a break of at least 3 hours
      */
     if(longerBreakRequired(cli, measures)){
-        if(false === cli.flags.quiet){
+        if(false === cli.flags.silent){
             console.log("\n --- END ANALYSIS --- ")
         }
         process.exit(0)
@@ -139,7 +138,7 @@ if(cli.flags.german){
      * there must be at least 5 minutes between two checks
      */
     
-    if(false === cli.flags.quiet){
+    if(false === cli.flags.silent){
         console.log("\n --- END ANALYSIS --- \n")
     }
 }
