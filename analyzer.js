@@ -90,8 +90,12 @@ if(cli.flags.printEmptyFiles){
 
 const daysBack = cli.flags.daysBack
 
+// FIXME: we dont have another report yet
+//if(cli.flags.german){
+    printGermanComplianceReport(cli, measures, daysBack)
+//}
 
-printGermanComplianceReport(cli, measures, daysBack)
+
 
 /*
   https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html

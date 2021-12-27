@@ -7,7 +7,7 @@ import { checkAndAdjustFlags } from './lib/client_helper.js'
 import { readJsonFiles } from './lib/measures.js'
 import { execute } from './lib/speedtest_exec.js'
 
-import { measurementNowWouldComplyGermanComplianceReport } from './lib/analytics.js'
+import { measurementNowWouldComplyGermanComplianceReport } from './lib/measures.js'
 
 const cli = meow(`        
 	Description
