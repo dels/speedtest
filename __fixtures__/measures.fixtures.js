@@ -156,13 +156,3 @@ export function fiveConsequtiveMeasures(){
         }
     }
 }
-
-/*
-
-
-  module.exports = {
-  cli: cli,
-  //    fiveConsequtiveMeasures: fiveConsequtiveMeasures,
-  //    sixConsequtiveMeasures: sixConsequtiveMeasures
-  }
-*/

@@ -100,3 +100,21 @@ export function cliEmptyDataDir(date=null, time=null) {
     }
     return cli
 }
+
+
+export function cliFullyValidDataDir(date=null, time=null) {
+    const cli = {
+        input: [],
+        flags: {
+            dataDir: "./__fixtures__/fixture_files/fully_valid_test/",
+            debug:false,
+            verbose:false,
+            printEmptyFiles:false,
+            daysBack:14,
+            silent: true,
+            date: date,
+            time: time
+        }
+    }
+    return cli
+}
