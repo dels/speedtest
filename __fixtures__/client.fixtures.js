@@ -68,7 +68,6 @@ export function cliDebugVerboseAndSilent(date=null, time=null) {
     return cli
 }
 
-
 export function cliGermanAndSleep() {
     const cli = {
         input: [],
@@ -80,6 +79,23 @@ export function cliGermanAndSleep() {
             daysBack:14,
             german: true,
             sleep: true,
+        }
+    }
+    return cli
+}
+
+export function cliEmptyDataDir(date=null, time=null) {
+    const cli = {
+        input: [],
+        flags: {
+            dataDir: "./__fixtures__/fixture_files/empty",
+            debug:false,
+            verbose:false,
+            printEmptyFiles:false,
+            daysBack:14,
+            silent: true,
+            date: date,
+            time: time
         }
     }
     return cli
