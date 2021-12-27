@@ -16,6 +16,23 @@ export function cli(date=null, time=null) {
     return cli
 }
 
+export function cliDebug(date=null, time=null) {
+    const cli = {
+        input: [],
+        flags: {
+            dataDir: "./data2",
+            debug: true,
+            verbose:false,
+            printEmptyFiles:false,
+            daysBack:14,
+            silent: false,
+            date: date,
+            time: time
+        }
+    }
+    return cli
+}
+
 export function cliDebugNotVerbose(date=null, time=null) {
     const cli = {
         input: [],
