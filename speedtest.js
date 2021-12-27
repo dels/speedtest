@@ -92,17 +92,6 @@ const cli = meow(`
     }
 });
 
-/*
-  https://www.bundesnetzagentur.de/DE/Vportal/TK/InternetTelefon/Internetgeschwindigkeit/start.html
-
-  todo for compliant checking:
-  - sanity check: if there has been a break of at least 3 hours after 5th and 6th measure
-  - sanity check: has there been a break of at least 5 minutes between checks
-  - DONE: have there been breaks between days? 
-  - sanity check: has threse been all sanity checks?
-  - check: we need to add "minimale Geschwindigkeit" which must not be fallenn below which is another check
-*/
-
 checkAndAdjustFlags(cli)
 
 const {measures, emptyJsonFiles }  = readJsonFiles(cli)
