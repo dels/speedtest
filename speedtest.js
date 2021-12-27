@@ -27,6 +27,7 @@ const cli = meow(`
           --min-sleep,               (default: 5)
           --max-sleep,               (default: 45)
           --executable
+          --home                     root-path of speedtest git checkout
           --data-dir                 (default: ./data)
           --german, -g               (default: false)
 
@@ -82,6 +83,9 @@ const cli = meow(`
             type: "string",
         },
         date: {
+            type: "string",
+        },
+        home: {
             type: "string",
         }
 
