@@ -3,7 +3,7 @@
 import meow from 'meow';
 
 import { printResultsSorted } from './lib/helper.js'
-import { checkConfig, checkAndAdjustFlags } from './lib/client_helper.js'
+import { checkAndAdjustFlags } from './lib/client_helper.js'
 import { readJsonFiles } from './lib/measures.js'
 import {
     printGermanComplianceReport
@@ -24,6 +24,13 @@ const cli = meow(`
           --german, -g               (default: false)
           --silent, -q
           --data-dir                 (default: ./data)
+         Contract Options
+          --download                 (the maximum download speed as contracted)
+          --upload                   (the maximum upload speed as contracted)
+          --avgDownload              (the averages download speed as contracted)
+          --avgUpload                (the average upload speed as contracted)
+          --minDownload              (the minimal download speed as contracted)
+          --minUpload                (the minimal upload speed as contracted)
 
         Examples
           $ ./analyser.js --data-dir /home/user/speedtest/data
@@ -54,12 +61,29 @@ const cli = meow(`
             type: 'string',
             default: "14",
             alias: 'dB'
+        },
+        download: {
+            type: 'number',
+        },
+        upload: {
+            type: 'number',
+        },
+        avgDownload: {
+            type: 'number',
+        },
+        avgUpload: {
+            type: 'number',
+        },
+        minDownload: {
+            type: 'number',
+        },
+        minUpload: {
+            type: 'number',
         }
     }
 });
 
 checkAndAdjustFlags(cli)
-checkConfig()
 
 const { measures, emptyJsonFiles }  = readJsonFiles(cli)
 
@@ -68,7 +92,7 @@ if(null == measures){
 }
 
 if(cli.flags.debug){
-    printResultsSorted(measures, emptyJsonFiles)
+    //printResultsSorted(measures, emptyJsonFiles)
 }
 
 if(cli.flags.printEmptyFiles){

@@ -1,5 +1,5 @@
 
-export function cli(date=null, time=null) {
+export function cliDefault(date=null, time=null) {
     const cli = {
         input: [],
         flags: {
