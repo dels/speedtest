@@ -1,13 +1,18 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
-SPEEDTEST_JS="adjust me git/github/speedtest/speedtest.js"
+NODE="" # if node is not in PATH of cron then you can put your node executable here
+SPEEDTEST_HOME="directory containing speedtest.js"
+SPEEDTEST_JS="$SPEEDTEST_HOME/speedtest.js"
+DATADIR="specify which dir to use as data dir"
 
-if [ "x$(which node)" == "x" ]; then
-  echo "node not found - please install nodejs for using speettest"
-  exit -1
-fi
+if [ "x$NODE" == "x" ]; then
+    if [ "x$(which node)" == "x" ]; then
+      echo "node not found - please install nodejs for using speettest or adjust path in crontab to also include path to node"
+      exit -1
+    fi
+    NODE=$(which node)
+fi 
+    
+$NODE $SPEEDTEST_JS --verbose --execute --german --no-sleep --data-dir $DATADIR --home $SPEEDTEST_HOME
 
-
-
-$SPEEDTEST_JS -q --no-execute --no-sleep
-
+exit 0
