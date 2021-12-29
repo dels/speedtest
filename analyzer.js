@@ -33,6 +33,7 @@ const cli = meow(`
           --minUpload                (the minimal upload speed as contracted)
 
          Logging Options
+          --logfile                  (logfile to log infos to)
           --error                    (only errors are logged)
           --warn                     (errors and warnings are logged)
           --info                     (errors, warnings and infos are logged)
