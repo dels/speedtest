@@ -23,7 +23,6 @@ $NODE $SPEEDTEST_JS --silent  \
       --verbose \
       --execute \
       --german \
-#      --no-sleep \
       --data-dir $DATADIR \
       --home $SPEEDTEST_HOME \
       --log-file /root/speedtest.log \
