@@ -103,6 +103,7 @@ const cli = meow(`
 
 checkAndAdjustFlags(cli)
 
+
 const {measures, emptyJsonFiles }  = readJsonFiles(cli)
 
 if(null == measures){
@@ -122,7 +123,7 @@ if(cli.flags.sleep){
     const sleepTimeMin = Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep
     const sleepTimeMs = sleepTimeMin * 60 * 1000
     if(cli.flags.debug || cli.flags.verbose){
-        console.log("will sleep for " + sleepTimeMin + " minutes")
+        log.debug("will sleep for " + sleepTimeMin + " minutes")
     }
         await new Promise(resolve => {
             setTimeout(resolve, sleepTimeMs);
