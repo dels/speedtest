@@ -33,6 +33,25 @@ export function cliDebug(date=null, time=null) {
     return cli
 }
 
+
+export function cliInfoLogLevel(date=null, time=null) {
+    const cli = {
+        input: [],
+        flags: {
+            dataDir: "./data2",
+            debug:false,
+            verbose:false,
+            info:true,
+            printEmptyFiles:false,
+            daysBack:14,
+            silent: true,
+            date: date,
+            time: time
+        }
+    }
+    return cli
+}
+
 export function cliDebugNotVerbose(date=null, time=null) {
     const cli = {
         input: [],

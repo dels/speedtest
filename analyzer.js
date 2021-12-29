@@ -33,7 +33,7 @@ const cli = meow(`
           --minUpload                (the minimal upload speed as contracted)
 
          Logging Options
-          --logfile                  (logfile to log infos to)
+          --log-file                  (logfile to log infos to)
           --error                    (only errors are logged)
           --warn                     (errors and warnings are logged)
           --info                     (errors, warnings and infos are logged)
@@ -57,6 +57,10 @@ const cli = meow(`
             type: 'boolean',
             default: false,
             alias: 'v'
+        },
+        silent: {
+            type: 'boolean',
+            default: false,
         },
         dataDir: {
             type: 'string',
@@ -89,6 +93,10 @@ const cli = meow(`
         },
         minUpload: {
             type: 'number',
+        },
+        logFile: {
+            type: 'string',
+            default: "./analyzer.log",
         }
     }
 });

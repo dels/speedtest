@@ -10,4 +10,5 @@ yarn.lock
 cron.hourly/speedtest_*
 cron.hourly/speedtest
 *.log
+*.log.*
 coverage/*
