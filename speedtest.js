@@ -118,17 +118,16 @@ if(cli.flags.german){
         process.exit(0)
     }
 }
-else {
-    if(cli.flags.sleep){
-        const sleepTimeMin = Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep
-        const sleepTimeMs = sleepTimeMin * 60 * 1000
-        if(cli.flags.debug || cli.flags.verbose){
-            console.log("will sleep for " + sleepTimeMin + " minutes")
-        }
+if(cli.flags.sleep){
+    const sleepTimeMin = Math.floor(Math.random() * (cli.flags.maxSleep - cli.flags.minSleep + 1)) + cli.flags.minSleep
+    const sleepTimeMs = sleepTimeMin * 60 * 1000
+    if(cli.flags.debug || cli.flags.verbose){
+        console.log("will sleep for " + sleepTimeMin + " minutes")
+    }
         await new Promise(resolve => {
             setTimeout(resolve, sleepTimeMs);
         })
-    }
 }
+
 execute(cli)
 

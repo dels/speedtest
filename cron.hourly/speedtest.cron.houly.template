@@ -4,6 +4,12 @@ NODE="" # if node is not in PATH of cron then you can put your node executable h
 SPEEDTEST_HOME="directory containing speedtest.js"
 SPEEDTEST_JS="$SPEEDTEST_HOME/speedtest.js"
 DATADIR="specify which dir to use as data dir"
+DOWNLOAD=250
+UPLOAD=40
+AVG_DOWNLOAD=225
+AVG_UPLOAD=22.5
+MIN_DOWNLOAD=150
+MIN_UPLOAD=10
 
 if [ "x$NODE" == "x" ]; then
     if [ "x$(which node)" == "x" ]; then
@@ -13,6 +19,19 @@ if [ "x$NODE" == "x" ]; then
     NODE=$(which node)
 fi 
     
-$NODE $SPEEDTEST_JS --verbose --execute --german --no-sleep --data-dir $DATADIR --home $SPEEDTEST_HOME
+$NODE $SPEEDTEST_JS --silent  \
+      --verbose \
+      --execute \
+      --german \
+#      --no-sleep \
+      --data-dir $DATADIR \
+      --home $SPEEDTEST_HOME \
+      --log-file /root/speedtest.log \
+      --download $DOWNLOAD \
+      --upload $UPLOAD \
+      --avg-download $AVG_DOWNLOAD \
+      --avg-upload $AVG_UPLOAD \
+      --min-download $MIN_DOWNLOAD \
+      --min-upload $MIN_UPLOAD
 
 exit 0
