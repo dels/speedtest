@@ -108,7 +108,9 @@ if(null == measures){
     process.exit(-1)
 }
 
-//printResultsSorted(measures, emptyJsonFiles)
+if("silly" === cli.logLevel){
+    printResultsSorted(measures, emptyJsonFiles)
+}
 
 if(cli.flags.printEmptyFiles){
     if(0 !== emptyJsonFiles.length){

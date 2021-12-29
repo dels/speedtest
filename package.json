@@ -9,10 +9,12 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.5.0",
+    "eslint-watch": "^8.0.0",
     "jest": "^27.4.5"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "dev": "esw . -w",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .js, ."
   }

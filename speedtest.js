@@ -2,6 +2,7 @@
 
 import meow from 'meow';
 
+import { getLogger } from './lib/logger.js'
 import { printResultsSorted } from './lib/helper.js'
 import { checkAndAdjustFlags } from './lib/client_helper.js'
 import { readJsonFiles } from './lib/measures.js'
@@ -102,7 +103,7 @@ const cli = meow(`
 });
 
 checkAndAdjustFlags(cli)
-
+const log = getLogger(cli)
 
 const {measures, emptyJsonFiles }  = readJsonFiles(cli)
 
