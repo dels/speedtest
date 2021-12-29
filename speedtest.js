@@ -31,6 +31,15 @@ const cli = meow(`
           --data-dir                 (default: ./data)
           --german, -g               (default: false)
 
+         Logging Options
+          --log-file                 (logfile to log infos to)
+          --error                    (only errors are logged)
+          --warn                     (errors and warnings are logged)
+          --info                     (errors, warnings and infos are logged)
+          --verbose, -v              (for verbose logging)
+          --debug, -d                (for debugging purposes)
+          --silly                    (log all steps and data - for tracing errors)
+
         Debugging Options
           --date                     (format: YYYY-MM-DD)
           --time                     (format: HH:MM)

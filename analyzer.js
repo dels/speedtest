@@ -33,14 +33,13 @@ const cli = meow(`
           --minUpload                (the minimal upload speed as contracted)
 
          Logging Options
-          --log-file                  (logfile to log infos to)
+          --log-file                 (logfile to log infos to)
           --error                    (only errors are logged)
           --warn                     (errors and warnings are logged)
           --info                     (errors, warnings and infos are logged)
           --verbose, -v              (for verbose logging)
           --debug, -d                (for debugging purposes)
           --silly                    (log all steps and data - for tracing errors)
-
 
         Examples
           $ ./analyser.js --data-dir /home/user/speedtest/data
