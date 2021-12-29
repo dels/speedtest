@@ -3,7 +3,8 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "meow": "^10.1.2"
+    "meow": "^10.1.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

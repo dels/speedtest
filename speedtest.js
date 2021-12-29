@@ -101,7 +101,7 @@ if(null == measures){
 }
 
 if(cli.flags.debug){
-    printResultsSorted(measures, emptyJsonFiles)
+    printResultsSorted(cli, measures, emptyJsonFiles)
 }
 
 if(cli.flags.german){

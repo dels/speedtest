@@ -2,6 +2,7 @@
 
 import meow from 'meow';
 
+import { getLogger } from './lib/logger.js'
 import { printResultsSorted } from './lib/helper.js'
 import { checkAndAdjustFlags } from './lib/client_helper.js'
 import { readJsonFiles } from './lib/measures.js'
@@ -17,13 +18,12 @@ const cli = meow(`
           $ ./analyser.js
 
         Options
-          --debug, -d
-          --verbose, -v
           --days-back, -dB
           --print-empty-files, -ef
           --german, -g               (default: false)
           --silent, -q
           --data-dir                 (default: ./data)
+
          Contract Options
           --download                 (the maximum download speed as contracted)
           --upload                   (the maximum upload speed as contracted)
@@ -31,6 +31,15 @@ const cli = meow(`
           --avgUpload                (the average upload speed as contracted)
           --minDownload              (the minimal download speed as contracted)
           --minUpload                (the minimal upload speed as contracted)
+
+         Logging Options
+          --error                    (only errors are logged)
+          --warn                     (errors and warnings are logged)
+          --info                     (errors, warnings and infos are logged)
+          --verbose, -v              (for verbose logging)
+          --debug, -d                (for debugging purposes)
+          --silly                    (log all steps and data - for tracing errors)
+
 
         Examples
           $ ./analyser.js --data-dir /home/user/speedtest/data
@@ -82,8 +91,8 @@ const cli = meow(`
         }
     }
 });
-
 checkAndAdjustFlags(cli)
+const log = getLogger(cli)
 
 const { measures, emptyJsonFiles }  = readJsonFiles(cli)
 
@@ -91,23 +100,21 @@ if(null == measures){
     process.exit(-1)
 }
 
-if(cli.flags.debug){
-    //printResultsSorted(measures, emptyJsonFiles)
-}
+//printResultsSorted(measures, emptyJsonFiles)
 
 if(cli.flags.printEmptyFiles){
     if(0 !== emptyJsonFiles.length){
         if(cli.flags.debug || cli.flags.verbose){
-            console.log("\n --- BEGIN EMPTY FILES --- ")
+            log.info("\n --- BEGIN EMPTY FILES --- ")
         }
         let deleteStr = "rm "
         for(const f of emptyJsonFiles){
-            console.log(f + " is empty")
+            log.info(f + " is empty")
             deleteStr += f + " "
         }
         console.log("delete all: rm " + deleteStr)
         if(cli.flags.debug || cli.flags.verbose){
-            console.log("\n --- END EMPTY FILES --- ")
+            log.info("\n --- END EMPTY FILES --- ")
         }
     }
 }
