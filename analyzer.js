@@ -77,21 +77,27 @@ const cli = meow(`
         },
         download: {
             type: 'number',
+            isRequired,
         },
         upload: {
             type: 'number',
+            isRequired,
         },
         avgDownload: {
             type: 'number',
+            isRequired,
         },
         avgUpload: {
             type: 'number',
+            isRequired,
         },
         minDownload: {
             type: 'number',
+            isRequired,
         },
         minUpload: {
             type: 'number',
+            isRequired,
         },
         logFile: {
             type: 'string',
