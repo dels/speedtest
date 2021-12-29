@@ -97,31 +97,31 @@ const cli = meow(`
         },
         home: {
             type: "string",
-            isRequired,
+            isRequired: true,
         },
         download: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         upload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         avgDownload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         avgUpload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         minDownload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         minUpload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
 
     }

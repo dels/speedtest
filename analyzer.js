@@ -10,9 +10,6 @@ import {
     printGermanComplianceReport
 } from './lib/analytics.js'
 
-import dotenv from "dotenv"
-dotenv.config()
-
 const cli = meow(`
         Usage
           $ ./analyser.js
@@ -77,27 +74,27 @@ const cli = meow(`
         },
         download: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         upload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         avgDownload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         avgUpload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         minDownload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         minUpload: {
             type: 'number',
-            isRequired,
+            isRequired: true,
         },
         logFile: {
             type: 'string',

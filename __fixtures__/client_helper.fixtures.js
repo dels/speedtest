@@ -10,7 +10,13 @@ export function cliDefault(date=null, time=null) {
             daysBack:14,
             silent: true,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25
         }
     }
     return cli
@@ -27,7 +33,13 @@ export function cliDebug(date=null, time=null) {
             daysBack:14,
             silent: false,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25
         }
     }
     return cli
@@ -46,7 +58,13 @@ export function cliInfoLogLevel(date=null, time=null) {
             daysBack:14,
             silent: true,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25
         }
     }
     return cli
@@ -63,7 +81,13 @@ export function cliDebugNotVerbose(date=null, time=null) {
             daysBack:14,
             silent: false,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25
         }
     }
     return cli
@@ -81,7 +105,13 @@ export function cliDebugVerboseAndSilent(date=null, time=null) {
             daysBack:14,
             silent: true,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25
         }
     }
     return cli
@@ -114,7 +144,13 @@ export function cliEmptyDataDir(date=null, time=null) {
             daysBack:14,
             silent: true,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25,
         }
     }
     return cli
@@ -132,7 +168,13 @@ export function cliFullyValidDataDir(date=null, time=null) {
             daysBack:14,
             silent: true,
             date: date,
-            time: time
+            time: time,
+            avgDownload: 225,
+            avgUpload: 22.5,
+            minDownload: 150,
+            minUpload: 10,
+            download: 250,
+            upload: 25,
         }
     }
     return cli
