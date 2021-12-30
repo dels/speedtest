@@ -30,7 +30,7 @@ const cli = meow(`
           --executable
           --home                     root-path of speedtest git checkout
           --data-dir                 (default: ./data)
-          --german, -g               (default: false)
+          --german, -g               checks following the rules of the bundesnetzagentur for speedtesting (default: false)
 
          Logging Options
           --log-file                 (logfile to log infos to)
@@ -66,7 +66,6 @@ const cli = meow(`
             type: 'string',
             default: "./data",
         },
-
         execute: {
             type: 'boolean',
             default: false,
@@ -93,6 +92,9 @@ const cli = meow(`
             type: "string",
         },
         date: {
+            type: "string",
+        },
+        time: {
             type: "string",
         },
         home: {
