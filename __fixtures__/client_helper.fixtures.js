@@ -8,7 +8,6 @@ export function cliDefault(date=null, time=null) {
             verbose:false,
             printEmptyFiles:false,
             daysBack:14,
-            silent: true,
             date: date,
             time: time,
             avgDownload: 225,
@@ -16,7 +15,8 @@ export function cliDefault(date=null, time=null) {
             minDownload: 150,
             minUpload: 10,
             download: 250,
-            upload: 25
+            upload: 25,
+            silent: true,
         }
     }
     return cli
@@ -27,8 +27,6 @@ export function cliDebug(date=null, time=null) {
         input: [],
         flags: {
             dataDir: "./data2",
-            debug: true,
-            verbose:false,
             printEmptyFiles:false,
             daysBack:14,
             silent: false,
@@ -39,12 +37,15 @@ export function cliDebug(date=null, time=null) {
             minDownload: 150,
             minUpload: 10,
             download: 250,
-            upload: 25
+            upload: 25,
+            silly: false,
+            debug: true,
+            verbose:false,
+
         }
     }
     return cli
 }
-
 
 export function cliInfoLogLevel(date=null, time=null) {
     const cli = {

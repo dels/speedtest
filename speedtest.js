@@ -130,7 +130,7 @@ const cli = meow(`
 });
 
 checkAndAdjustFlags(cli)
-const log = getLogger(cli)
+const log = getLogger(cli, import.meta.url)
 
 const {measures, emptyJsonFiles }  = readJsonFiles(cli)
 

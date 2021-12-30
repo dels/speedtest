@@ -102,8 +102,9 @@ const cli = meow(`
         }
     }
 });
+
 checkAndAdjustFlags(cli)
-const log = getLogger(cli)
+const log = getLogger(cli, import.meta.url)
 
 const { measures, emptyJsonFiles }  = readJsonFiles(cli)
 
@@ -112,7 +113,7 @@ if(null == measures){
 }
 
 if("silly" === cli.logLevel){
-    printResultsSorted(measures, emptyJsonFiles)
+    printResultsSorted(cli, measures, emptyJsonFiles)
 }
 
 if(cli.flags.printEmptyFiles){
