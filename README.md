@@ -35,14 +35,14 @@ i recommend that you pre-check your network connection of the measuring host. yo
    - logfile
    - path to installaion (--home)
    - OPTIONAL: customize --log-level and --log-file
-   - (basically script will tell you what is missing or wrong)
+   - (basically, the script will tell you what is missing or wrong)
 
 all commands together - only customize user that is supposed to run analytics
 
-aptitude install speedtest-cli npm &&  npm install --global yarn &&  npm cache clean -f && npm install -g n &&  n stable && \
+USER="your user" su -u $USER git clone https://github.com/dels/speedtest && aptitude install speedtest-cli npm &&  npm install --global yarn &&  npm cache clean -f && npm install -g n &&  n stable && \
  cp cron.hourly/speedtest.cron.houly.template  /etc/cron.hourly/speedtest \
  chmod 755 /etc/cron.hourly/speedtest && chmod 755 speedtest.js && chmod 755 analyzer.js && $EDITOR /etc/cron.hourly/speedtest \
-su <your user> && yarn install
+su -u $USER yarn install
 
 ## interpretation of results
 
